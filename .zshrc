@@ -8,10 +8,8 @@ plugins=(git)
 
 source $ZSH/oh-my-zsh.sh
 
-
 # EXPORTS #
 export PATH=$PATH:/usr/local/go/bin
-export PATH=$PATH:$HOME/.linkerd2/bin
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 
 # ALIASES #
