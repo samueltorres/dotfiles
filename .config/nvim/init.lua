@@ -124,11 +124,32 @@ vim.opt.joinspaces = false -- Insert only one space with a join command
 require('lazy').setup {
   -- colorscheme
   {
-    'rebelot/kanagawa.nvim',
-    opts = {},
-    config = function(_, opts)
-      require('kanagawa').setup(opts)
-      vim.cmd.colorscheme 'kanagawa'
+    'catppuccin/nvim',
+    name = 'catppuccin',
+    priority = 1000,
+    opts = {
+      integrations = {
+        cmp = true,
+        fidget = true,
+        gitsigns = true,
+        nvimtree = true,
+        harpoon = true,
+        treesitter = true,
+        notify = true,
+        neotree = true,
+        which_key = true,
+        telescope = {
+          enabled = true,
+        },
+        mini = {
+          enabled = true,
+          indentscope_color = '',
+        },
+      },
+    },
+    config = function()
+      require('catppuccin').setup {}
+      vim.cmd.colorscheme 'catppuccin-mocha'
     end,
   },
 
@@ -425,7 +446,7 @@ require('lazy').setup {
           behavior = cmp.ConfirmBehavior.Insert,
         },
         sources = {
-          { name = 'nvim_lsp' },
+          { name = 'nvim_lsp', keyword_length = 1 },
           { name = 'luasnip', keyword_length = 2 },
           { name = 'buffer', keyword_length = 5 },
           { name = 'path' },
@@ -521,12 +542,6 @@ require('lazy').setup {
     end,
   },
 
-  -- Color highlights
-  {
-    'norcalli/nvim-colorizer.lua',
-    opts = {},
-  },
-
   -- Easy navigation between tmux and nvim
   {
     'christoomey/vim-tmux-navigator',
@@ -545,6 +560,7 @@ require('lazy').setup {
       { '<c-\\>', '<cmd><C-U>TmuxNavigatePrevious<cr>' },
     },
   },
+
   -- Oil.nvim
   {
     'stevearc/oil.nvim',
@@ -553,16 +569,36 @@ require('lazy').setup {
       show_hidden_files = true,
     },
   },
-  -- NeoTree
+
+  -- Nvim-tree
   {
-    'nvim-neo-tree/neo-tree.nvim',
-    branch = 'v3.x',
+    'nvim-tree/nvim-tree.lua',
+    version = '*',
+    lazy = false,
     dependencies = {
-      'nvim-lua/plenary.nvim',
-      'nvim-tree/nvim-web-devicons', -- not strictly required, but recommended
-      'MunifTanjim/nui.nvim',
-      -- "3rd/image.nvim", -- Optional image support in preview window: See `# Preview Mode` for more information
+      'nvim-tree/nvim-web-devicons',
     },
+    opts = {
+      filters = {
+        git_clean = true,
+      },
+      renderer = {
+        highlight_git = 'name',
+        icons = {
+          web_devicons = {
+            file = {
+              color = false,
+            },
+          },
+          show = {
+            git = false,
+          },
+        },
+      },
+    },
+    config = function(_, opts)
+      require('nvim-tree').setup(opts)
+    end,
   },
 }
 
@@ -613,7 +649,10 @@ vim.keymap.set('n', '<leader>dq', vim.diagnostic.setloclist, { desc = 'Open diag
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
 -- Oil
-vim.keymap.set('n', '-', '<CMD>Oil<CR>', { desc = 'Open parent directory' })
+vim.keymap.set('n', '<leader>-', '<CMD>Oil<CR>', { desc = 'Open parent directory' })
+
+-- Tree
+vim.keymap.set('n', '<leader>e', '<CMD>NvimTreeToggle<CR>', { silent = true, noremap = true })
 
 -- Telescope
 local builtin = require 'telescope.builtin'
