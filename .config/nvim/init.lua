@@ -11,6 +11,112 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+---------------
+--- options ---
+---------------
+
+vim.g.mapleader = ' '
+vim.g.maplocalleader = ' '
+vim.g.have_nerd_font = true
+
+-- Make line numbers default
+vim.opt.number = true
+vim.opt.relativenumber = true
+
+-- Enable mouse mode, can be useful for resizing splits for example!
+vim.opt.mouse = 'a'
+
+-- Don't show the mode, since it's already in the status line
+vim.opt.showmode = false
+
+-- Sync clipboard between OS and Neovim.
+vim.opt.clipboard = 'unnamedplus'
+
+-- Enable break indent
+vim.opt.breakindent = true
+
+-- Save undo history
+vim.opt.undofile = true
+
+-- Case-insensitive searching UNLESS \C or one or more capital letters in the search term
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
+
+-- Keep signcolumn on by default
+vim.opt.signcolumn = 'yes'
+
+-- Decrease update time
+vim.opt.updatetime = 50
+
+-- Decrease mapped sequence wait time
+-- Displays which-key popup sooner
+vim.opt.timeoutlen = 300
+vim.opt.ttimeoutlen = 10
+vim.opt.timeout = true
+
+-- Configure how new splits should be opened
+vim.opt.splitright = true
+vim.opt.splitbelow = true
+
+-- Sets how neovim will display certain whitespace characters in the editor.
+--  and `:help 'listchars'`
+vim.opt.list = true -- Show special characters
+vim.opt.listchars = {
+  -- eol = '↲',
+  tab = '  ',
+  extends = '›',
+  precedes = '‹',
+  trail = '•',
+}
+vim.opt.fillchars = {
+  diff = '░',
+  msgsep = '‾',
+  fold = ' ',
+  foldopen = '▾',
+  foldclose = '▸',
+}
+
+-- Folds
+vim.o.foldcolumn = 'auto'
+vim.o.foldmethod = 'indent'
+vim.o.foldlevel = 99
+vim.o.foldenable = false
+
+-- Preview substitutions live, as you type!
+vim.opt.inccommand = 'split'
+
+-- Show which line your cursor is on
+vim.opt.cursorline = true
+
+-- Minimal number of screen lines to keep above and below the cursor.
+vim.opt.scrolloff = 10
+
+-- Set highlight on search, but clear on pressing <Esc> in normal mode
+vim.opt.hlsearch = true
+
+-- Enable termguicolors for colorizer
+vim.opt.termguicolors = true
+
+-- Hide command line when its not being used
+vim.opt.cmdheight = 0
+
+-- Don't use swapfile
+vim.opt.swapfile = false -- Disable swapfiles
+vim.opt.undofile = true -- Enable persistent undo
+vim.opt.backup = false -- Disable backups
+vim.opt.writebackup = false -- Disable backups
+
+-- Indent
+vim.opt.wrap = false -- wrap lines longer than the width of the window
+vim.opt.expandtab = true -- Use the appropriate number of spaces to insert a <Tab>
+vim.opt.autoindent = true -- Copy indent from current line when starting a new line
+vim.opt.smarttab = true -- Makes tabbing smarter
+vim.opt.smartindent = true -- Makes indentation smarter
+vim.opt.tabstop = 4 -- Number of spaces in tab when displaying a file
+vim.opt.softtabstop = 4 -- Number of spaces in tab when editing a file
+vim.opt.shiftwidth = 4 -- Number of spaces to use for autoindent
+vim.opt.joinspaces = false -- Insert only one space with a join command
+
 ----------------
 --- plugins ---
 ----------------
@@ -18,42 +124,14 @@ vim.opt.rtp:prepend(lazypath)
 require('lazy').setup {
   -- colorscheme
   {
-    'catppuccin/nvim',
-    name = 'catppuccin',
-    lazy = false,
-    priority = 1000,
-    opts = {
-      flavour = 'mocha',
-      transparent_background = false,
-      integrations = {
-        lsp_trouble = true,
-        mason = true,
-        neotest = true,
-        noice = true,
-        which_key = true,
-        cmp = true,
-        gitsigns = true,
-        nvimtree = true,
-        treesitter = true,
-        notify = true,
-        mini = {
-          enabled = true,
-          indentscope_color = '',
-        },
-      },
-      custom_highlights = function(colors)
-        return {
-          PmenuThumb = { bg = colors.blue },
-          DapUIFloatBorder = { link = 'FloatBorder' },
-        }
-      end,
-    },
-    config = function(plugin, opts)
-      vim.opt.background = 'dark'
-      require(plugin.name).setup(opts)
-      vim.cmd.colorscheme 'catppuccin-mocha'
+    'rebelot/kanagawa.nvim',
+    opts = {},
+    config = function(_, opts)
+      require('kanagawa').setup(opts)
+      vim.cmd.colorscheme 'kanagawa'
     end,
   },
+
   -- Detect tabstop and shiftwidth automatically
   { 'tpope/vim-sleuth' },
 
@@ -103,6 +181,20 @@ require('lazy').setup {
     },
     config = function()
       require('telescope').setup {
+        defaults = {
+          layout_strategy = 'vertical',
+          path_display = { filename_first = { reverse_directories = false } },
+        },
+        pickers = {
+          find_files = {
+            file_ignore_patterns = { 'node_modules', '.git', '.venv', 'vendor' },
+            hidden = true,
+          },
+          oldfiles = {
+            file_ignore_patterns = { 'node_modules', '.git', '.venv', 'vendor' },
+            cwd_only = true,
+          },
+        },
         extensions = {
           ['ui-select'] = {
             require('telescope.themes').get_dropdown(),
@@ -216,7 +308,8 @@ require('lazy').setup {
     end,
   },
 
-  { -- Autoformat
+  -- Autoformat
+  {
     'stevearc/conform.nvim',
     lazy = false,
     keys = {
@@ -247,7 +340,8 @@ require('lazy').setup {
     },
   },
 
-  { -- Autocompletion
+  -- Autocompletion
+  {
     'hrsh7th/nvim-cmp',
     event = 'InsertEnter',
     dependencies = {
@@ -256,15 +350,12 @@ require('lazy').setup {
         'L3MON4D3/LuaSnip',
         build = 'make install_jsregexp',
         dependencies = {
-          -- `friendly-snippets` contains a variety of premade snippets.
-          --    See the README about individual language/framework/plugin snippets:
-          --    https://github.com/rafamadriz/friendly-snippets
-          -- {
-          --   'rafamadriz/friendly-snippets',
-          --   config = function()
-          --     require('luasnip.loaders.from_vscode').lazy_load()
-          --   end,
-          -- },
+          {
+            'rafamadriz/friendly-snippets',
+            config = function()
+              require('luasnip.loaders.from_vscode').lazy_load()
+            end,
+          },
         },
       },
       'saadparwaiz1/cmp_luasnip',
@@ -272,7 +363,12 @@ require('lazy').setup {
       'hrsh7th/cmp-path',
     },
     config = function()
-      -- See `:help cmp`
+      local has_words_before = function()
+        unpack = unpack or table.unpack
+        local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+        return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match '%s' == nil
+      end
+
       local cmp = require 'cmp'
       local luasnip = require 'luasnip'
       luasnip.config.setup {}
@@ -293,34 +389,65 @@ require('lazy').setup {
           ['<C-y>'] = cmp.mapping.confirm { select = true },
           ['<CR>'] = cmp.mapping.confirm { select = true },
           ['<C-Space>'] = cmp.mapping.complete {},
-
-          ['<C-l>'] = cmp.mapping(function()
-            if luasnip.expand_or_locally_jumpable() then
+          ['<Tab>'] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+              cmp.select_next_item()
+            elseif luasnip.expand_or_locally_jumpable() then
               luasnip.expand_or_jump()
+            elseif has_words_before() then
+              cmp.complete()
+            else
+              fallback()
             end
           end, { 'i', 's' }),
-          ['<C-h>'] = cmp.mapping(function()
-            if luasnip.locally_jumpable(-1) then
+          ['<S-Tab>'] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+              cmp.select_prev_item()
+            elseif luasnip.jumpable(-1) then
               luasnip.jump(-1)
+            else
+              fallback()
             end
           end, { 'i', 's' }),
         },
+        -- don't auto select item
+        preselect = cmp.PreselectMode.None,
+        window = {
+          documentation = cmp.config.window.bordered(),
+        },
+        view = {
+          entries = {
+            name = 'custom',
+            selection_order = 'near_cursor',
+          },
+        },
+        confirm_opts = {
+          behavior = cmp.ConfirmBehavior.Insert,
+        },
         sources = {
           { name = 'nvim_lsp' },
-          { name = 'luasnip' },
+          { name = 'luasnip', keyword_length = 2 },
+          { name = 'buffer', keyword_length = 5 },
           { name = 'path' },
         },
       }
     end,
   },
-  { -- Autopair
+
+  -- Autopair
+  {
     'altermo/ultimate-autopair.nvim',
     event = { 'InsertEnter', 'CmdlineEnter' },
     opts = {},
   },
 
   -- Highlight todo, notes, etc in comments
-  { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
+  {
+    'folke/todo-comments.nvim',
+    event = 'VimEnter',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+    opts = { signs = false },
+  },
 
   { -- Collection of various small independent plugins/modules
     'echasnovski/mini.nvim',
@@ -340,6 +467,7 @@ require('lazy').setup {
       -- - sr)'  - [S]urround [R]eplace [)] [']
       require('mini.surround').setup()
 
+      -- Status line
       local statusline = require 'mini.statusline'
       statusline.setup { use_icons = true }
 
@@ -350,9 +478,31 @@ require('lazy').setup {
       statusline.section_location = function()
         return '%2l:%-2v'
       end
+
+      -- Startup screen
+      local starter = require 'mini.starter'
+      starter.setup {
+        evaluate_single = true,
+        items = {
+          {
+            { name = 'Edit new buffer', action = 'enew', section = '' },
+            { action = 'Telescope find_files', name = 'Find Files', section = '' },
+            { action = 'Telescope live_grep', name = 'Live grep', section = '' },
+            { action = 'Telescope oldfiles', name = 'Recent files', section = '' },
+            { name = 'Quit Neovim', action = 'qall', section = '' },
+          },
+        },
+        content_hooks = {
+          starter.gen_hook.adding_bullet(),
+          starter.gen_hook.aligning('center', 'center'),
+        },
+        footer = '',
+      }
     end,
   },
-  { -- Highlight, edit, and navigate code
+
+  -- Highlight, edit, and navigate code
+  {
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
     opts = {
@@ -370,69 +520,51 @@ require('lazy').setup {
       require('nvim-treesitter.configs').setup(opts)
     end,
   },
+
+  -- Color highlights
+  {
+    'norcalli/nvim-colorizer.lua',
+    opts = {},
+  },
+
+  -- Easy navigation between tmux and nvim
+  {
+    'christoomey/vim-tmux-navigator',
+    cmd = {
+      'TmuxNavigateLeft',
+      'TmuxNavigateDown',
+      'TmuxNavigateUp',
+      'TmuxNavigateRight',
+      'TmuxNavigatePrevious',
+    },
+    keys = {
+      { '<c-h>', '<cmd><C-U>TmuxNavigateLeft<cr>' },
+      { '<c-j>', '<cmd><C-U>TmuxNavigateDown<cr>' },
+      { '<c-k>', '<cmd><C-U>TmuxNavigateUp<cr>' },
+      { '<c-l>', '<cmd><C-U>TmuxNavigateRight<cr>' },
+      { '<c-\\>', '<cmd><C-U>TmuxNavigatePrevious<cr>' },
+    },
+  },
+  -- Oil.nvim
+  {
+    'stevearc/oil.nvim',
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    opts = {
+      show_hidden_files = true,
+    },
+  },
+  -- NeoTree
+  {
+    'nvim-neo-tree/neo-tree.nvim',
+    branch = 'v3.x',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'nvim-tree/nvim-web-devicons', -- not strictly required, but recommended
+      'MunifTanjim/nui.nvim',
+      -- "3rd/image.nvim", -- Optional image support in preview window: See `# Preview Mode` for more information
+    },
+  },
 }
-
----------------
---- options ---
----------------
-
-vim.g.mapleader = ' '
-vim.g.maplocalleader = ' '
-vim.g.have_nerd_font = true
-
--- Make line numbers default
-vim.opt.number = true
-vim.opt.relativenumber = true
-
--- Enable mouse mode, can be useful for resizing splits for example!
-vim.opt.mouse = 'a'
-
--- Don't show the mode, since it's already in the status line
-vim.opt.showmode = false
-
--- Sync clipboard between OS and Neovim.
-vim.opt.clipboard = 'unnamedplus'
-
--- Enable break indent
-vim.opt.breakindent = true
-
--- Save undo history
-vim.opt.undofile = true
-
--- Case-insensitive searching UNLESS \C or one or more capital letters in the search term
-vim.opt.ignorecase = true
-vim.opt.smartcase = true
-
--- Keep signcolumn on by default
-vim.opt.signcolumn = 'yes'
-
--- Decrease update time
-vim.opt.updatetime = 250
-
--- Decrease mapped sequence wait time
--- Displays which-key popup sooner
-vim.opt.timeoutlen = 300
-
--- Configure how new splits should be opened
-vim.opt.splitright = true
-vim.opt.splitbelow = true
-
--- Sets how neovim will display certain whitespace characters in the editor.
---  and `:help 'listchars'`
-vim.opt.list = true
-vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
-
--- Preview substitutions live, as you type!
-vim.opt.inccommand = 'split'
-
--- Show which line your cursor is on
-vim.opt.cursorline = true
-
--- Minimal number of screen lines to keep above and below the cursor.
-vim.opt.scrolloff = 10
-
--- Set highlight on search, but clear on pressing <Esc> in normal mode
-vim.opt.hlsearch = true
 
 --------------
 --- keymap ---
@@ -445,6 +577,32 @@ vim.keymap.set('n', '<Leader>q', ':q!<CR>', { silent = true })
 -- Remove search highlight
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
+-- Exit on jj and jk
+vim.keymap.set('n', 'j', 'gj')
+vim.keymap.set('n', 'k', 'gk')
+
+-- Exit on jj and jk
+vim.keymap.set('i', 'jj', '<ESC>')
+vim.keymap.set('i', 'jk', '<ESC>')
+
+-- Go back to visual mode after reindent
+vim.keymap.set('v', '<', '<gv', { desc = 'Go back to visual mode after reindent' })
+vim.keymap.set('v', '>', '>gv', { desc = 'Go back to visual mode after reindent' })
+
+-- Move selection
+vim.keymap.set('v', '<A-j>', ":m '>+1<CR>gv=gv", { desc = 'Move selection down' })
+vim.keymap.set('v', '<A-k>', ":m '<-2<CR>gv=gv", { desc = 'Move selection up' })
+
+-- Split resizes
+vim.keymap.set('n', '<M-j>', ':resize -2<CR>', { desc = 'Decrease window height' })
+vim.keymap.set('n', '<M-k>', ':resize +2<CR>', { desc = 'Increase window height' })
+vim.keymap.set('n', '<M-h>', ':vertical resize -10<CR>', { desc = 'Decrease window width' })
+vim.keymap.set('n', '<M-l>', ':vertical resize +10<CR>', { desc = 'Increase window width' })
+
+-- Utils
+vim.keymap.set('n', '0', '^', { desc = 'Go to first non-whitespace character of the line' })
+vim.keymap.set('n', 'Y', 'y$', { desc = 'Yank til end of line' })
+
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic message' })
@@ -454,12 +612,10 @@ vim.keymap.set('n', '<leader>dq', vim.diagnostic.setloclist, { desc = 'Open diag
 -- Terminal keymaps
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
--- Keybinds to make split navigation easier.
-vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
-vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
-vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
-vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
+-- Oil
+vim.keymap.set('n', '-', '<CMD>Oil<CR>', { desc = 'Open parent directory' })
 
+-- Telescope
 local builtin = require 'telescope.builtin'
 vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
 vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
@@ -473,7 +629,20 @@ vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Fi
 vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
 vim.keymap.set('n', '<leader>/', builtin.current_buffer_fuzzy_find, { desc = '[/] Fuzzily search in current buffer' })
 
--- [[ Basic Autocommands ]]
+-- Git keymaps
+vim.keymap.set('n', '<leader>gp', '<CMD>Gitsigns preview_hunk<CR>', { desc = 'Preview git hunk' })
+
+-- Autocommands
+
+-- Toggle highlighting current line only in active splits {{{1
+vim.api.nvim_create_autocmd({ 'VimEnter', 'WinEnter', 'BufWinEnter', 'VimLeave', 'WinLeave', 'BufWinLeave' }, {
+  group = vim.api.nvim_create_augroup('user_toggle_cursorline', { clear = true }),
+  desc = 'toggle cursorline on focus',
+  pattern = '*',
+  callback = function(ev)
+    vim.opt_local.cursorline = ev.event:find 'Enter' ~= nil
+  end,
+})
 
 -- Highlight when yanking (copying) text
 vim.api.nvim_create_autocmd('TextYankPost', {

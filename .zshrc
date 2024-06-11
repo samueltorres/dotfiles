@@ -15,7 +15,6 @@ export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 # ALIASES #
 
 alias g='git'
-
 alias k='kubectl'
 alias k='kubectl'
 alias kg='kubectl get'
