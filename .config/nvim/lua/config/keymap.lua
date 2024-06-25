@@ -21,12 +21,6 @@ vim.keymap.set('v', '>', '>gv', { desc = 'Go back to visual mode after reindent'
 vim.keymap.set('v', '<C-j>', ":m '>+1<CR>gv=gv", { desc = 'Move selection down', silent = true })
 vim.keymap.set('v', '<C-k>', ":m '<-2<CR>gv=gv", { desc = 'Move selection up', silent = true })
 
--- Split resizes
-vim.keymap.set('n', '<M-j>', ':resize -2<CR>', { desc = 'Decrease window height' })
-vim.keymap.set('n', '<M-k>', ':resize +3<CR>', { desc = 'Increase window height' })
-vim.keymap.set('n', '<M-h>', ':vertical resize -10<CR>', { desc = 'Decrease window width' })
-vim.keymap.set('n', '<M-l>', ':vertical resize +10<CR>', { desc = 'Increase window width' })
-
 -- Utils
 vim.keymap.set('n', '0', '^', { desc = 'Go to first non-whitespace character of the line' })
 vim.keymap.set('n', 'Y', 'y$', { desc = 'Yank til end of line' })
@@ -39,9 +33,6 @@ vim.keymap.set('n', '<leader>dq', vim.diagnostic.setloclist, { desc = 'Open diag
 
 -- Terminal keymaps
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
-
--- Oil
-vim.keymap.set('n', '<leader>-', '<CMD>Oil<CR>', { desc = 'Open parent directory' })
 
 -- Tree
 vim.keymap.set('n', '<leader>e', '<CMD>NvimTreeToggle<CR>', { silent = true, noremap = true })
