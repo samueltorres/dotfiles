@@ -93,7 +93,7 @@ vim.opt.backup = false -- Disable backups
 vim.opt.writebackup = false -- Disable backups
 
 -- Indent
-vim.opt.wrap = false -- wrap lines longer than the width of the window
+vim.opt.wrap = true -- wrap lines longer than the width of the window
 vim.opt.expandtab = true -- Use the appropriate number of spaces to insert a <Tab>
 vim.opt.autoindent = true -- Copy indent from current line when starting a new line
 vim.opt.smarttab = true -- Makes tabbing smarter

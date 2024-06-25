@@ -13,6 +13,20 @@ return {
     event = 'VeryLazy',
     config = function()
       require('noice').setup({
+        routes = {
+          {
+            filter = {
+              event = 'msg_show',
+              kind = '',
+              find = 'written',
+            },
+            opts = { skip = true },
+          },
+          {
+            view = 'notify',
+            filter = { event = 'msg_showmode' },
+          },
+        },
         -- add any options here
         lsp = {
           -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
@@ -29,6 +43,16 @@ return {
           long_message_to_split = true, -- long messages will be sent to a split
           inc_rename = false, -- enables an input dialog for inc-rename.nvim
           lsp_doc_border = false, -- add a border to hover docs and signature help
+        },
+        cmdline = {
+          format = {
+            search_down = {
+              view = 'cmdline',
+            },
+            search_up = {
+              view = 'cmdline',
+            },
+          },
         },
       })
     end,
@@ -57,25 +81,6 @@ return {
           icons_enabled = false,
           component_separators = '|',
           section_separators = '',
-        },
-        sections = {
-          lualine_x = {
-            {
-              require('noice').api.statusline.mode.get,
-              cond = require('noice').api.statusline.mode.has,
-              color = { fg = '#ff9e64' },
-            },
-            {
-              require('noice').api.status.command.get,
-              cond = require('noice').api.status.command.has,
-              color = { fg = '#ff9e64' },
-            },
-          },
-          lualine_a = {
-            {
-              'buffers',
-            },
-          },
         },
         extensions = {
           'nvim-tree',
