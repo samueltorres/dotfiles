@@ -15,6 +15,10 @@ return {
         'vimdoc',
         'hcl',
         'terraform',
+        'go',
+        'gomod',
+        'gosum',
+        'gotmpl',
       },
       auto_install = true,
       highlight = {

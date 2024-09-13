@@ -29,14 +29,14 @@ return {
     opts = {
       view = {
         adaptive_size = true,
-        side = 'right',
+        -- side = 'right',
       },
       update_focused_file = {
         enable = true,
       },
       filters = {
         custom = {
-          '.git',
+          '.git/',
           'vendor',
         },
       },

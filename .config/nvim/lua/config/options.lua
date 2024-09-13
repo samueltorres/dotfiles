@@ -55,6 +55,7 @@ vim.opt.listchars = {
   trail = '•',
 }
 vim.opt.fillchars = {
+  eob = ' ',
   diff = '░',
   msgsep = '‾',
   fold = ' ',

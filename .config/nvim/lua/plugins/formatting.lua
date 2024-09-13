@@ -38,6 +38,7 @@ return {
         lua = { 'stylua' },
         go = { 'goimports', 'gofmt' },
         terraform = { 'terraform_fmt' },
+        proto = { 'buf' },
       },
     },
   },
