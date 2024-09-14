@@ -2,7 +2,7 @@ return {
   -- Todo comments
   {
     'folke/todo-comments.nvim',
-    event = 'VimEnter',
+    event = 'vimenter',
     dependencies = { 'nvim-lua/plenary.nvim' },
     opts = { signs = false },
   },
@@ -65,7 +65,10 @@ return {
       {
         'rcarriga/nvim-notify',
         opts = {
-          render = 'minimal',
+          stages = 'fade',
+          render = 'compact',
+          timeout = 1000,
+          level = 'ERROR',
         },
       },
     },
@@ -81,6 +84,7 @@ return {
           icons_enabled = false,
           component_separators = '|',
           section_separators = '',
+          theme = 'rose-pine',
         },
         extensions = {
           'nvim-tree',
@@ -97,13 +101,6 @@ return {
     event = 'VimEnter',
     config = function()
       require('which-key').setup()
-      require('which-key').register({
-        ['<leader>c'] = { name = '[C]ode', _ = 'which_key_ignore' },
-        ['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
-        ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
-        ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
-        ['<leader>t'] = { name = '[T]oggle', _ = 'which_key_ignore' },
-      })
     end,
   },
 }
