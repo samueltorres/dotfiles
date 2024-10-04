@@ -5,6 +5,7 @@ DIR=$HOME/src/github.com/samueltorres/dotfiles
 DOTFILES=(
 	".tmux.conf"
 	".config/nvim"
+	".config/alacritty"
 )
 
 for dotfile in "${DOTFILES[@]}";do
