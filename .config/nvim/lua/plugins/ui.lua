@@ -84,11 +84,14 @@ return {
           icons_enabled = false,
           component_separators = '|',
           section_separators = '',
-          theme = 'rose-pine',
+          theme = 'catppuccin',
+          globalstatus = true,
+          disabled_filetypes = {
+            'nvim-tree',
+          },
         },
         extensions = {
           'nvim-tree',
-          'oil',
           'trouble',
         },
       })

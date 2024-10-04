@@ -12,7 +12,6 @@ return {
     config = function()
       require('telescope').setup({
         defaults = {
-          layout_strategy = 'vertical',
           path_display = { filename_first = { reverse_directories = false } },
         },
         pickers = {
@@ -26,6 +25,8 @@ return {
           },
           live_grep = {
             file_ignore_patterns = { 'node_modules', '.git/', 'vendor' },
+            hidden = true,
+            cwd_only = true,
           },
         },
         extensions = {
