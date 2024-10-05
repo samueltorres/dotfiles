@@ -79,6 +79,7 @@ return {
             },
           },
         },
+        zls = {},
       }
 
       require('mason').setup()
