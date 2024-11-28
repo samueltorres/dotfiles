@@ -3,15 +3,13 @@ return {
   { 'tpope/vim-sleuth' },
 
   -- Comment visual regions/lines
-  {
-    'numToStr/Comment.nvim',
-    opts = {},
-  },
+  { 'numToStr/Comment.nvim' },
 
   -- Autoformat
   {
     'stevearc/conform.nvim',
-    lazy = false,
+    event = { 'BufWritePre' },
+    cmd = { 'ConformInfo' },
     keys = {
       {
         '<leader>f',
@@ -23,7 +21,8 @@ return {
       },
     },
     opts = {
-      notify_on_error = false,
+      notify_on_error = true,
+
       format_on_save = function(bufnr)
         -- Disable "format_on_save lsp_fallback" for languages that don't
         -- have a well standardized coding style. You can add additional
@@ -36,7 +35,7 @@ return {
       end,
       formatters_by_ft = {
         lua = { 'stylua' },
-        go = { 'goimports', 'gofmt' },
+        go = { 'goimports', 'gofumt' },
         terraform = { 'terraform_fmt' },
         proto = { 'buf' },
       },
