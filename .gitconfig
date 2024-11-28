@@ -1,0 +1,47 @@
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+    required = true
+[commit]
+	gpgsign = true
+	template = ~/.git-commit-template
+[color]
+    ui = auto
+[push]
+	default = current
+	followTags = true
+	autoSetupRemote = true
+[pull]
+	rebase = true
+[fetch]
+	prune = true
+[url "git@github.com:"]
+	insteadOf = https://github.com/
+[core]
+  editor = nvim
+    excludesfile = ~/.gitignore_global
+[alias]
+	plr = pull --rebase
+	pl = pull
+	p = push
+	pf = push --force-with-lease
+	co = checkout
+	cb = checkout -b
+	st = status
+	lg = log --all --graph --decorate --oneline --abbrev-commit
+	c = commit
+	ac = !git add -A && git commit
+	br = branch -a
+	remotes = remote -v
+	s = !git add -A && git commit --signoff -v && git push
+	spr = !git add -A && git commit --signoff -v && git push && f3 github pr --target-branch master
+	sf = !git add -A && git commit --signoff && git push --force-with-lease
+	fix = !git add -A && git commit --amend --no-edit && git push --force-with-lease
+	am = commit --ammend
+	uncommit = reset --soft HEAD~1
+	cdroot = !cd $(git root)
+	root = rev-parse --show-toplevel
+	b = branch --sort=-committerdate
+	cob = !git checkout "$(git branch --all | fzf| tr -d ‘[:space:]’)"
+	u = !git fetch origin master && git rebase origin/master
