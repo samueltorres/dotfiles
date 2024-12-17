@@ -67,7 +67,7 @@ vim.o.foldenable = false
 -- Set highlight on search, but clear on pressing <Esc> in normal mode
 vim.opt.hlsearch = true
 -- Hide command line when its not being used
-vim.opt.cmdheight = 0
+vim.opt.cmdheight = 1
 -- Don't use swapfile
 vim.opt.swapfile = false -- Disable swapfiles
 vim.opt.undofile = true -- Enable persistent undo
@@ -394,33 +394,13 @@ require("lazy").setup({
 	{
 		"lewis6991/gitsigns.nvim",
 		opts = {
-			-- signs = {
-			-- add = { text = "+" },
-			-- change = { text = "~" },
-			-- delete = { text = "_" },
-			-- topdelete = { text = "‾" },
-			-- changedelete = { text = "~" },
-			-- },
-		},
-	},
-	--LazyGit
-	{
-		"kdheepak/lazygit.nvim",
-		cmd = {
-			"LazyGit",
-			"LazyGitConfig",
-			"LazyGitCurrentFile",
-			"LazyGitFilter",
-			"LazyGitFilterCurrentFile",
-		},
-		-- optional for floating window border decoration
-		dependencies = {
-			"nvim-lua/plenary.nvim",
-		},
-		-- setting the keybinding for LazyGit with 'keys' is recommended in
-		-- order to load the plugin when the command is run for the first time
-		keys = {
-			{ "<leader>lg", "<cmd>LazyGit<cr>", desc = "LazyGit" },
+			signs = {
+				add = { text = "+" },
+				change = { text = "~" },
+				delete = { text = "_" },
+				topdelete = { text = "‾" },
+				changedelete = { text = "~" },
+			},
 		},
 	},
 	-- GitPortal to open file in github
@@ -440,7 +420,6 @@ require("lazy").setup({
 			end)
 		end,
 	},
-	-- [[ LSP ]] --
 	-- `lazydev` configures Lua LSP for your Neovim config, runtime and plugins
 	{
 		"folke/lazydev.nvim",
@@ -595,7 +574,6 @@ require("lazy").setup({
 				"golines",
 				"gotests",
 				"zls",
-				"yaml-language-server",
 				"tflint",
 				"terraform-ls",
 			})
@@ -659,38 +637,8 @@ require("lazy").setup({
 			statusline.setup({
 				use_icons = vim.g.have_nerd_font,
 			})
-
-			-- You can configure sections in the statusline by overriding their
-			-- default behavior. For example, here we set the section for
-			-- cursor location to LINE:COLUMN
-			---@diagnostic disable-next-line: duplicate-set-field
-			statusline.section_location = function()
-				return "%2l:%-2v"
-			end
-			statusline.section_fileinfo(args)
-
-			-- Startup screen
-			local starter = require("mini.starter")
-			starter.setup({
-				evaluate_single = true,
-				items = {
-					{
-						{ name = "Edit new buffer", action = "enew", section = "" },
-						{ action = "Telescope find_files", name = "Find Files", section = "" },
-						{ action = "Telescope live_grep", name = "Live grep", section = "" },
-						{ action = "Telescope oldfiles", name = "Recent files", section = "" },
-						{ name = "Quit Neovim", action = "qall", section = "" },
-					},
-				},
-				content_hooks = {
-					starter.gen_hook.adding_bullet(),
-					starter.gen_hook.aligning("center", "center"),
-				},
-				footer = "",
-			})
 		end,
 	},
-	-- [[ Navigation ]] --
 	-- Easy navigation between tmux and nvim
 	{
 		"christoomey/vim-tmux-navigator",
@@ -886,59 +834,25 @@ require("lazy").setup({
 			end, { desc = "[S]earch [N]eovim files" })
 		end,
 	},
-	-- Buffer line
-	-- {
-	-- 	"akinsho/bufferline.nvim",
-	-- 	version = "*",
-	-- 	dependencies = "nvim-tree/nvim-web-devicons",
-	-- 	config = function()
-	-- 		require("bufferline").setup({})
-	-- 	end,
-	-- },
-
 	-- [[ Find/Replace ]] --
 	{
 		"MagicDuck/grug-far.nvim",
-		config = function()
-			require("grug-far").setup({
-				-- options, see Configuration section below
-				-- there are no required options atm
-				-- engine = 'ripgrep' is default, but 'astgrep' can be specified
-			})
-		end,
 	},
 
 	-- [[ Theme ]] --
 	{
-		"catppuccin/nvim",
-		name = "catppuccin",
+		"folke/tokyonight.nvim",
+		lazy = false,
 		priority = 1000,
 		opts = {
-			dim_inactive = {
-				enabled = true,
-			},
-			integrations = {
-				cmp = true,
-				fidget = true,
-				gitsigns = true,
-				nvimtree = true,
-				harpoon = true,
-				treesitter = true,
-				notify = true,
-				which_key = true,
-				telescope = {
-					enabled = true,
-				},
-				mini = {
-					enabled = true,
-				},
-			},
+			style = "storm",
+			dim_inactive = true,
 		},
 		init = function()
-			vim.cmd.colorscheme("catppuccin-macchiato")
-			vim.cmd.hi("Comment gui=none")
+			vim.cmd.colorscheme("tokyonight-storm")
 		end,
 	},
+
 	-- [[ Treesitter ]] --
 	-- Highlight, edit, and navigate code
 	{
@@ -1033,13 +947,132 @@ require("lazy").setup({
 		end,
 		dependencies = {
 			"MunifTanjim/nui.nvim",
-			{
-				"rcarriga/nvim-notify",
-				opts = {
-					stages = "fade",
-					render = "compact",
-					timeout = 1000,
-					level = "ERROR",
+		},
+		-- [[ Snacks ]] --
+		{
+			"folke/snacks.nvim",
+			priority = 1000,
+			lazy = false,
+			---@type snacks.Config
+			opts = {
+				bigfile = { enabled = true },
+				dashboard = { enabled = true },
+				indent = {
+					enabled = true,
+					animate = {
+						enabled = false,
+					},
+				},
+				input = { enabled = true },
+				notifier = {
+					enabled = true,
+					timeout = 3000,
+				},
+				quickfile = { enabled = true },
+				statuscolumn = { enabled = true },
+				words = { enabled = true },
+				styles = {
+					notification = {},
+				},
+			},
+			keys = {
+				{
+					"<leader>bd",
+					function()
+						Snacks.bufdelete()
+					end,
+					desc = "Delete Buffer",
+				},
+				{
+					"<leader>cR",
+					function()
+						Snacks.rename.rename_file()
+					end,
+					desc = "Rename File",
+				},
+				{
+					"<leader>gB",
+					function()
+						Snacks.gitbrowse()
+					end,
+					desc = "Git Browse",
+				},
+				{
+					"<leader>gb",
+					function()
+						Snacks.git.blame_line()
+					end,
+					desc = "Git Blame Line",
+				},
+				{
+					"<leader>gf",
+					function()
+						Snacks.lazygit.log_file()
+					end,
+					desc = "Lazygit Current File History",
+				},
+				{
+					"<leader>gg",
+					function()
+						Snacks.lazygit()
+					end,
+					desc = "Lazygit",
+				},
+				{
+					"<leader>un",
+					function()
+						Snacks.notifier.hide()
+					end,
+					desc = "Dismiss All Notifications",
+				},
+			},
+		},
+
+		-- [[ AI ]] --
+		{
+			"yetone/avante.nvim",
+			enabled = false,
+			event = "VeryLazy",
+			lazy = false,
+			version = false, -- set this if you want to always pull the latest change
+			opts = {
+				-- add any opts here
+			},
+			-- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
+			build = "make",
+			-- build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" -- for windows
+			dependencies = {
+				"stevearc/dressing.nvim",
+				"nvim-lua/plenary.nvim",
+				"MunifTanjim/nui.nvim",
+				--- The below dependencies are optional,
+				"hrsh7th/nvim-cmp", -- autocompletion for avante commands and mentions
+				"nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
+				"zbirenbaum/copilot.lua", -- for providers='copilot'
+				{
+					-- support for image pasting
+					"HakonHarnes/img-clip.nvim",
+					event = "VeryLazy",
+					opts = {
+						-- recommended settings
+						default = {
+							embed_image_as_base64 = false,
+							prompt_for_file_name = false,
+							drag_and_drop = {
+								insert_mode = true,
+							},
+							-- required for Windows users
+							use_absolute_path = true,
+						},
+					},
+				},
+				{
+					-- Make sure to set this up properly if you have lazy=true
+					"MeanderingProgrammer/render-markdown.nvim",
+					opts = {
+						file_types = { "markdown", "Avante" },
+					},
+					ft = { "markdown", "Avante" },
 				},
 			},
 		},
