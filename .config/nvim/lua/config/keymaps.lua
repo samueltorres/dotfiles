@@ -1,7 +1,6 @@
--- [[ Keymaps ]] --
 -- Fast saving
-vim.keymap.set('n', '<Leader>w', ':write!<CR>', { silent = true })
-vim.keymap.set('n', '<Leader>q', ':q!<CR>', { silent = true })
+vim.keymap.set('n', '<Leader>w', ':write!<CR>', { desc = 'Write', silent = true })
+vim.keymap.set('n', '<Leader>q', ':q!<CR>', { desc = 'Quit', silent = true })
 -- Remove search highlight
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 -- Exit on jj and jk
@@ -24,6 +23,9 @@ vim.keymap.set('n', '<leader>dp', vim.diagnostic.goto_prev, { desc = 'Go to prev
 vim.keymap.set('n', '<leader>dn', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic message' })
 vim.keymap.set('n', '<leader>de', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
 vim.keymap.set('n', '<leader>dq', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
+-- Quickfix
+vim.keymap.set('n', '<C-q>n', '<CMD>cnext<CR>zz', { desc = 'Forward quickfix' })
+vim.keymap.set('n', '<C-q>p', '<CMD>cprev<CR>zz', { desc = 'Previous quickfix' })
 -- Terminal keymaps
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 -- Tree
@@ -35,7 +37,3 @@ vim.keymap.set('n', 't', '<Plug>(leap)')
 vim.keymap.set('n', 'T', '<Plug>(leap-from-window)')
 vim.keymap.set({ 'x', 'o' }, 't', '<Plug>(leap-forward)')
 vim.keymap.set({ 'x', 'o' }, 'T', '<Plug>(leap-backward)')
--- Buffer keymaps
-vim.keymap.set('n', '<leader><Tab>', '<CMD>bnext!<CR>', { silent = true, noremap = true })
-vim.keymap.set('n', '<leader><S-Tab>', '<CMD>bprev!<CR>', { silent = true, noremap = true })
-vim.keymap.set('n', '<leader><Tab>d', '<CMD>bd!<CR>', { silent = true, noremap = true })

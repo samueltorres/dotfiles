@@ -1,46 +1,48 @@
 return {
   -- `lazydev` configures Lua LSP for your Neovim config, runtime and plugins
-  {
-    'folke/lazydev.nvim',
-    ft = 'lua',
-    opts = {
-      library = {
-        -- Load luvit types when the `vim.uv` word is found
-        { path = 'luvit-meta/library', words = { 'vim%.uv' } },
-      },
-    },
-  },
   { 'Bilal2453/luvit-meta', lazy = true },
   {
     -- Main LSP Configuration
     'neovim/nvim-lspconfig',
     dependencies = {
       { 'williamboman/mason.nvim', config = true },
-      'williamboman/mason-lspconfig.nvim',
-      'WhoIsSethDaniel/mason-tool-installer.nvim',
+      { 'williamboman/mason-lspconfig.nvim' },
+      { 'WhoIsSethDaniel/mason-tool-installer.nvim' },
       { 'saghen/blink.cmp' },
-      { 'j-hui/fidget.nvim', opts = {} },
+      { 'j-hui/fidget.nvim' },
+      -- To support helm lsp
+      { 'towolf/vim-helm', ft = 'helm' },
+      -- Lua ls
+      {
+        'folke/lazydev.nvim',
+        ft = 'lua',
+        opts = {
+          library = {
+            -- Load luvit types when the `vim.uv` word is found
+            { path = 'luvit-meta/library', words = { 'vim%.uv' } },
+          },
+        },
+      },
+    },
+    opts = {
+      inlay_hints = { enabled = true },
     },
     config = function(_, opts)
       vim.api.nvim_create_autocmd('LspAttach', {
         group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
         callback = function(event)
-          -- In this case, we create a function that lets us more easily define mappings specific
-          -- for LSP related items. It sets the mode, buffer and description for us each time.
           local map = function(keys, func, desc, mode)
             mode = mode or 'n'
             vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
           end
 
-          map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
-          map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
-          map('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
-          map('<leader>D', require('telescope.builtin').lsp_type_definitions, 'Type [D]efinition')
-          map('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
-          map('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
+          map('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
+          map('gi', vim.lsp.buf.implementation, '[G]oto [I]mplementation')
+          map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
+          map('gr', vim.lsp.buf.references, '[G]oto [R]eferences')
+          map('<leader>D', vim.lsp.buf.type_definition, 'Type [D]efinition')
           map('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
           map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction', { 'n', 'x' })
-          map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
 
           local client = vim.lsp.get_client_by_id(event.data.client_id)
           if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
@@ -65,22 +67,8 @@ return {
               end,
             })
           end
-
-          if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
-            map('<leader>th', function()
-              vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
-            end, '[T]oggle Inlay [H]ints')
-          end
         end,
       })
-
-      -- Change diagnostic symbols in the sign column (gutter)
-      local signs = { ERROR = '', WARN = '', INFO = '', HINT = '' }
-      local diagnostic_signs = {}
-      for type, icon in pairs(signs) do
-        diagnostic_signs[vim.diagnostic.severity[type]] = icon
-      end
-      vim.diagnostic.config({ signs = { text = diagnostic_signs } })
 
       local servers = {
         gopls = {},
@@ -94,12 +82,12 @@ return {
             },
           },
         },
+        helm_ls = {},
       }
 
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities = vim.tbl_deep_extend('force', capabilities, require('blink.cmp').get_lsp_capabilities())
 
-      require('mason').setup()
       local ensure_installed = vim.tbl_keys(opts.servers or {})
       vim.list_extend(ensure_installed, {
         'stylua',
@@ -114,6 +102,8 @@ return {
         'tflint',
         'terraform-ls',
       })
+
+      require('mason').setup()
       require('mason-tool-installer').setup({ ensure_installed = ensure_installed })
       require('mason-lspconfig').setup({
         handlers = {
