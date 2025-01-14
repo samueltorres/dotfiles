@@ -36,6 +36,11 @@ return {
     opts = {
       close_if_last_window = true,
       filesystem = {
+        follow_current_file = {
+          enabled = true,
+          leave_dirs_open = true,
+        },
+        use_libuv_file_watcher = true,
         filtered_items = {
           hide_by_pattern = {
             'vendor',
@@ -56,23 +61,4 @@ return {
       },
     },
   },
-  -- Useful plugin to show you pending keybinds.
-  -- {
-  --   'folke/which-key.nvim',
-  --   event = 'VimEnter', -- Sets the loading event to 'VimEnter'
-  --   opts = {
-  --     icons = {
-  --       mappings = vim.g.have_nerd_font,
-  --     },
-  --     spec = {
-  --       { '<leader>c', group = '[C]ode', mode = { 'n', 'x' } },
-  --       { '<leader>d', group = '[D]ocument' },
-  --       { '<leader>r', group = '[R]ename' },
-  --       { '<leader>f', group = '[F]ind' },
-  --       { '<leader>w', group = '[W]orkspace' },
-  --       { '<leader>t', group = '[T]oggle' },
-  --       { '<leader>g', group = '[G]it' },
-  --     },
-  --   },
-  -- },
 }

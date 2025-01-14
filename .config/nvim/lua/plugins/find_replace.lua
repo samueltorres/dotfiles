@@ -3,40 +3,33 @@ return {
     'MagicDuck/grug-far.nvim',
     keys = {
       {
-        '<leader>sr',
+        '<leader>r',
         function()
           require('grug-far').open()
         end,
-        desc = 'Search in project',
+        desc = 'Search/Replace in project',
       },
       {
-        '<leader>sw',
+        '<leader>rw',
         function()
-          require('grug-far').open({ prefills = { search = vim.fn.expand('<cword>') } })
+          require('grug-far').open { prefills = { search = vim.fn.expand '<cword>' } }
         end,
-        desc = 'Search for word under cursor',
+        desc = 'Search/Replace for word under cursor',
       },
       {
-        '<leader>sw',
+        '<leader>rw',
         function()
           require('grug-far').with_visual_selection()
         end,
-        desc = 'Search for selection',
+        desc = 'Search/Replace selection',
         mode = { 'v', 'x' },
       },
       {
-        '<leader>sf',
+        '<leader>rf',
         function()
-          require('grug-far').open({ prefills = { paths = vim.fn.expand('%') } })
+          require('grug-far').open { prefills = { paths = vim.fn.expand '%' } }
         end,
-        desc = 'Search in current file',
-      },
-      {
-        '<leader>sa',
-        function()
-          require('grug-far').open({ engine = 'astgrep' })
-        end,
-        desc = 'Search with ast-grep engine',
+        desc = 'Search/Replace in current file',
       },
     },
     opts = {
