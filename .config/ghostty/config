@@ -1,0 +1,9 @@
+theme = tokyonight_moon
+macos-titlebar-style = tabs
+font-size = 18
+cursor-style = block
+mouse-hide-while-typing = true
+window-padding-balance = true
+window-save-state = always
+font-thicken = false
+adjust-cell-width = -1

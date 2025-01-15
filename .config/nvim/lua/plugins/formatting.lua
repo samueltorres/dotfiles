@@ -1,8 +1,6 @@
 return {
   -- Detect tabstop and shiftwidth automatically
   'tpope/vim-sleuth',
-  -- Comment visual regions/lines
-  { 'numToStr/Comment.nvim' },
   -- Autoformat
   {
     'stevearc/conform.nvim',
@@ -10,12 +8,12 @@ return {
     cmd = { 'ConformInfo' },
     keys = {
       {
-        '<leader>f',
+        '<leader>af',
         function()
           require('conform').format({ async = true, lsp_format = 'fallback' })
         end,
         mode = '',
-        desc = '[F]ormat buffer',
+        desc = 'Format buffer',
       },
     },
     opts = {

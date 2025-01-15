@@ -20,94 +20,44 @@ return {
   -- Leap
   {
     'ggandor/leap.nvim',
-    opts = {},
   },
-  -- File tree
   {
-    'nvim-tree/nvim-tree.lua',
+    'nvim-neo-tree/neo-tree.nvim',
     version = '*',
     dependencies = {
-      'nvim-tree/nvim-web-devicons',
+      'nvim-lua/plenary.nvim',
+      'nvim-tree/nvim-web-devicons', -- not strictly required, but recommended
+      'MunifTanjim/nui.nvim',
+    },
+    cmd = 'Neotree',
+    keys = {
+      { '<leader>e', ':Neotree reveal<CR>', desc = 'File tree', silent = true },
     },
     opts = {
-      view = {
-        adaptive_size = true,
-      },
-      update_focused_file = {
-        enable = true,
-      },
-      filters = {
-        custom = {
-          '.git/',
-          'vendor',
+      close_if_last_window = true,
+      filesystem = {
+        follow_current_file = {
+          enabled = true,
+          leave_dirs_open = true,
         },
-      },
-      renderer = {
-        highlight_git = 'name',
-        icons = {
-          web_devicons = {
-            file = {
-              color = false,
+        use_libuv_file_watcher = true,
+        filtered_items = {
+          hide_by_pattern = {
+            'vendor',
+          },
+          always_show = {
+            '.config',
+          },
+        },
+        window = {
+          mappings = {
+            ['<leader>e'] = 'close_window',
+            ['<tab>'] = {
+              'open',
+              nowait = true, -- disable `nowait` if you have existing combos starting with this char that you want to use
             },
           },
-          show = {
-            git = false,
-          },
         },
-      },
-    },
-  },
-  -- Useful plugin to show you pending keybinds.
-  {
-    'folke/which-key.nvim',
-    event = 'VimEnter', -- Sets the loading event to 'VimEnter'
-    opts = {
-      icons = {
-        -- set icon mappings to true if you have a Nerd Font
-        mappings = vim.g.have_nerd_font,
-        -- If you are using a Nerd Font: set icons.keys to an empty table which will use the
-        -- default which-key.nvim defined Nerd Font icons, otherwise define a string table
-        keys = vim.g.have_nerd_font and {} or {
-          Up = '<Up> ',
-          Down = '<Down> ',
-          Left = '<Left> ',
-          Right = '<Right> ',
-          C = '<C-…> ',
-          M = '<M-…> ',
-          D = '<D-…> ',
-          S = '<S-…> ',
-          CR = '<CR> ',
-          Esc = '<Esc> ',
-          ScrollWheelDown = '<ScrollWheelDown> ',
-          ScrollWheelUp = '<ScrollWheelUp> ',
-          NL = '<NL> ',
-          BS = '<BS> ',
-          Space = '<Space> ',
-          Tab = '<Tab> ',
-          F1 = '<F1>',
-          F2 = '<F2>',
-          F3 = '<F3>',
-          F4 = '<F4>',
-          F5 = '<F5>',
-          F6 = '<F6>',
-          F7 = '<F7>',
-          F8 = '<F8>',
-          F9 = '<F9>',
-          F10 = '<F10>',
-          F11 = '<F11>',
-          F12 = '<F12>',
-        },
-      },
-
-      -- Document existing key chains
-      spec = {
-        { '<leader>c', group = '[C]ode', mode = { 'n', 'x' } },
-        { '<leader>d', group = '[D]ocument' },
-        { '<leader>r', group = '[R]ename' },
-        { '<leader>s', group = '[S]earch' },
-        { '<leader>w', group = '[W]orkspace' },
-        { '<leader>t', group = '[T]oggle' },
-        { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
       },
     },
   },
