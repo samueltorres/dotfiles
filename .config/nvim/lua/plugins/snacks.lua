@@ -7,7 +7,7 @@ return {
       bigfile = { enabled = true },
       dashboard = { enabled = true },
       indent = {
-        enabled = false,
+        enabled = true,
         animate = {
           enabled = false,
         },
@@ -24,6 +24,21 @@ return {
         notification = {},
       },
       picker = {
+        sources = {
+          explorer = {
+            win = {
+              list = {
+                keys = {
+                  ['<S-i>'] = 'toggle_ignored',
+                  ['<S-h>'] = 'toggle_hidden',
+                  ['<Tab>'] = 'confirm',
+                  ['<Space>'] = 'confirm',
+                  ['<c-Space>'] = 'select_and_next',
+                },
+              },
+            },
+          },
+        },
         win = {
           input = {
             keys = {
@@ -33,8 +48,23 @@ return {
           },
         },
       },
+      terminal = {
+        win = {
+          wo = {
+            winbar = '',
+          },
+        },
+      },
+      explorer = {},
     },
     keys = {
+      {
+        '<leader>e',
+        function()
+          Snacks.explorer.open()
+        end,
+        desc = 'File Explorer',
+      },
       {
         '<leader>,',
         function()
@@ -251,7 +281,7 @@ return {
         desc = 'Colorschemes',
       },
       {
-        '<leader>qp',
+        '<leader>sp',
         function()
           Snacks.picker.projects()
         end,
@@ -328,6 +358,13 @@ return {
           Snacks.lazygit()
         end,
         desc = 'Lazygit',
+      },
+      {
+        '<leader>t',
+        function()
+          Snacks.terminal.toggle()
+        end,
+        desc = 'Terminal',
       },
     },
   },
