@@ -6,7 +6,7 @@ return {
       'MunifTanjim/nui.nvim',
     },
     config = function()
-      require('noice').setup {
+      require('noice').setup({
         routes = {
           {
             filter = {
@@ -29,6 +29,10 @@ return {
             ['vim.lsp.util.stylize_markdown'] = true,
           },
         },
+        cmdline = {
+          enabled = true,
+          view = 'cmdline',
+        },
         -- you can enable a preset for easier configuration
         presets = {
           bottom_search = true, -- use a classic bottom cmdline for search
@@ -37,7 +41,7 @@ return {
           inc_rename = false, -- enables an input dialog for inc-rename.nvim
           lsp_doc_border = true, -- add a border to hover docs and signature help
         },
-      }
+      })
     end,
   },
 }

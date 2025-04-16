@@ -13,12 +13,6 @@ vim.api.nvim_create_autocmd({ 'VimEnter', 'WinEnter', 'BufWinEnter', 'VimLeave',
   desc = 'toggle cursorline on focus',
   pattern = '*',
   callback = function(ev)
-    vim.opt_local.cursorline = ev.event:find 'Enter' ~= nil
-  end,
-})
-
-vim.api.nvim_create_autocmd({ 'QuitPre' }, {
-  callback = function()
-    Snacks.explorer.close()
+    vim.opt_local.cursorline = ev.event:find('Enter') ~= nil
   end,
 })

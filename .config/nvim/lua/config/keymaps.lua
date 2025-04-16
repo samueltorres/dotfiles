@@ -24,14 +24,12 @@ vim.keymap.set('n', '<leader>dn', vim.diagnostic.goto_next, { desc = 'Go to next
 vim.keymap.set('n', '<leader>de', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
 vim.keymap.set('n', '<leader>dq', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 -- Quickfix
-vim.keymap.set('n', '<C-q>n', '<CMD>cnext<CR>zz', { desc = 'Forward quickfix' })
-vim.keymap.set('n', '<C-q>p', '<CMD>cprev<CR>zz', { desc = 'Previous quickfix' })
+vim.keymap.set('n', '<leader>cn', '<CMD>cnext<CR>zz', { desc = 'Forward quickfix' })
+vim.keymap.set('n', '<leader>cp', '<CMD>cprev<CR>zz', { desc = 'Previous quickfix' })
+vim.keymap.set('n', '<leader>cc', '<CMD>cclose<CR>zz', { desc = 'Close quickfix' })
+vim.keymap.set('n', '<leader>co', '<CMD>copen<CR>zz', { desc = 'Open quickfix' })
 -- Terminal keymaps
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
--- Tree
-vim.keymap.set('n', '<leader>e', '<CMD>NvimTreeToggle<CR>', { silent = true, noremap = true })
--- Git keymaps
-vim.keymap.set('n', '<leader>gp', '<CMD>Gitsigns preview_hunk<CR>', { desc = 'Preview git hunk' })
 -- Leap Keymaps
 vim.keymap.set('n', 't', '<Plug>(leap)')
 vim.keymap.set('n', 'T', '<Plug>(leap-from-window)')

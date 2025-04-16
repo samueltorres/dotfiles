@@ -4,4 +4,20 @@ return {
     'lewis6991/gitsigns.nvim',
     opts = {},
   },
+  {
+    'sindrets/diffview.nvim',
+    opts = {},
+    keys = {
+      {
+        '<leader>gdd',
+        ':DiffviewOpen<CR>',
+        desc = 'Open Diffview',
+      },
+      {
+        '<leader>gdc',
+        ':DiffviewClose<CR>',
+        desc = 'Close Diffview',
+      },
+    },
+  },
 }
