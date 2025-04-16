@@ -3,14 +3,14 @@ return {
   {
     'echasnovski/mini.nvim',
     config = function()
-      require('mini.ai').setup { n_lines = 500 }
+      require('mini.ai').setup({ n_lines = 500 })
       require('mini.surround').setup()
       require('mini.pairs').setup()
       require('mini.statusline').setup()
       require('mini.comment').setup()
 
-      local miniclue = require 'mini.clue'
-      miniclue.setup {
+      local miniclue = require('mini.clue')
+      miniclue.setup({
         triggers = {
           -- Leader triggers
           { mode = 'n', keys = '<Leader>' },
@@ -44,6 +44,7 @@ return {
         },
 
         clues = {
+          { mode = 'n', keys = '<Leader>c', desc = '+Quickfix' },
           { mode = 'n', keys = '<Leader>g', desc = '+Git' },
           { mode = 'n', keys = '<Leader>f', desc = '+Find' },
           { mode = 'n', keys = '<Leader>d', desc = '+Diagnostics' },
@@ -57,7 +58,7 @@ return {
           miniclue.gen_clues.windows(),
           miniclue.gen_clues.z(),
         },
-      }
+      })
     end,
   },
 }

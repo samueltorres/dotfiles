@@ -32,8 +32,6 @@ return {
                   ['<S-i>'] = 'toggle_ignored',
                   ['<S-h>'] = 'toggle_hidden',
                   ['<Tab>'] = 'confirm',
-                  ['<Space>'] = 'confirm',
-                  ['<c-Space>'] = 'select_and_next',
                 },
               },
             },
@@ -104,7 +102,7 @@ return {
       {
         '<leader>fc',
         function()
-          Snacks.picker.files { cwd = vim.fn.stdpath 'config' }
+          Snacks.picker.files({ cwd = vim.fn.stdpath('config') })
         end,
         desc = 'Find Config File',
       },
@@ -358,13 +356,6 @@ return {
           Snacks.lazygit()
         end,
         desc = 'Lazygit',
-      },
-      {
-        '<leader>t',
-        function()
-          Snacks.terminal.toggle()
-        end,
-        desc = 'Terminal',
       },
     },
   },

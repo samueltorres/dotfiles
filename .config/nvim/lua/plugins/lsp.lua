@@ -36,6 +36,8 @@ return {
             vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
           end
 
+          vim.diagnostic.config({ virtual_text = true })
+
           map('<leader>rn', vim.lsp.buf.rename, 'Rename')
           map('<leader>ca', vim.lsp.buf.code_action, 'Code Action', { 'n', 'x' })
 
@@ -58,7 +60,7 @@ return {
               group = vim.api.nvim_create_augroup('kickstart-lsp-detach', { clear = true }),
               callback = function(event2)
                 vim.lsp.buf.clear_references()
-                vim.api.nvim_clear_autocmds { group = 'kickstart-lsp-highlight', buffer = event2.buf }
+                vim.api.nvim_clear_autocmds({ group = 'kickstart-lsp-highlight', buffer = event2.buf })
               end,
             })
           end
@@ -99,8 +101,8 @@ return {
       })
 
       require('mason').setup()
-      require('mason-tool-installer').setup { ensure_installed = ensure_installed }
-      require('mason-lspconfig').setup {
+      require('mason-tool-installer').setup({ ensure_installed = ensure_installed })
+      require('mason-lspconfig').setup({
         handlers = {
           function(server_name)
             local server = servers[server_name] or {}
@@ -108,7 +110,7 @@ return {
             require('lspconfig')[server_name].setup(server)
           end,
         },
-      }
+      })
     end,
   },
 }

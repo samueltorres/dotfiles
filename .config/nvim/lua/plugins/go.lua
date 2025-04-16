@@ -8,11 +8,35 @@ return {
       'nvim-treesitter/nvim-treesitter',
     },
     opts = {},
-    -- config = function()
-    --   require('go').setup()
-    -- end,
     event = { 'CmdlineEnter' },
     ft = { 'go', 'gomod' },
     build = ':lua require("go.install").update_all_sync()',
+    keys = {
+      {
+        '<leader>ta',
+        ':GoTest<CR>',
+        desc = 'Go test function',
+      },
+      {
+        '<leader>tt',
+        ':GoTestFunc -n 1<CR>',
+        desc = 'Go test function',
+      },
+      {
+        '<leader>ts',
+        ':GoTestFunc -s -n 1<CR>',
+        desc = 'Go test function selection',
+      },
+      {
+        '<leader>tf',
+        ':GoTestFile -n 1<CR>',
+        desc = 'Go test file',
+      },
+      {
+        '<leader>tp',
+        ':GoTestPkg -n 1<CR>',
+        desc = 'Go test package',
+      },
+    },
   },
 }
